@@ -17,6 +17,6 @@
         "type": "DOCKER"
     },
     "cpus": 0.1,
-    "id": "fob-aviary/python-1",
+    "id": "fob-aviary/template",
     "mem": 100
 }

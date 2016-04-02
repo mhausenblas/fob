@@ -39,14 +39,16 @@ else:
   FORMAT = "%(asctime)-0s %(message)s"
   logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="%Y-%m-%dT%I:%M:%S")
 
-
 class StatsHandler(tornado.web.RequestHandler):
     def get(self):
         """
         Provides an overview of the registered functions.
         """
         res = "fob up"
-        self.write(res)
+        self.set_header("Content-Type", "application/json")
+        self.write({
+                "status" : res
+        })
 
 class GenerateFunHandler(tornado.web.RequestHandler):
     def post(self):
@@ -58,12 +60,24 @@ class GenerateFunHandler(tornado.web.RequestHandler):
         logging.info("Trying to launch code snippet, interpreting it as [%s]" %(lang_arg))
         logging.debug("\n%s" %(code_snippet))
         try:
-            res = dcos_util.launch_app(MARATHON_API, "templates/python_sandbox.json")
+            (res, fun_id) = dcos_util.register_fun(MARATHON_API, "templates/python_sandbox.json", code_snippet)
             self.set_header("Content-Type", "application/json")
-            self.write((res.json()))
+            self.write({
+                "id" : fun_id
+            })
         except Exception as err:
             logging.debug("Something went wrong when launching the sandbox:\n%s" %(str(err)))
             self.set_status(404)
+
+class MetaFunHandler(tornado.web.RequestHandler):
+    def get(self, fun_id):
+        """
+        Provides information on a registered functions.
+        """
+        logging.info("Trying to look up function %s" %(fun_id))
+        res = dcos_util.about_fun(MARATHON_API, fun_id)
+        self.set_header("Content-Type", "application/json")
+        self.write(res.json())
 
 def _make_app():
     """
@@ -71,7 +85,8 @@ def _make_app():
     """
     return tornado.web.Application([
         (r"/api/stats", StatsHandler),
-        (r"/api/gen", GenerateFunHandler)
+        (r"/api/gen", GenerateFunHandler),
+        (r"/api/meta/(.*)", MetaFunHandler)
     ])
 
 if __name__ == "__main__":

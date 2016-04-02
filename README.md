@@ -10,7 +10,7 @@ It is not meant to be used in production. Its purpose is to illustrate and study
 For the following to work, I'm assuming you've got a DCOS cluster provisioned and the [DCOS CLI](https://docs.mesosphere.com/administration/cli/) installed. Note: you want to have [jq](https://stedolan.github.io/jq/) installed, otherwise you'd need to use `grep` for certain CLI interactions.
 Also, I'm using [http](http://httpie.org) for HTTP API interactions, if you don't have this or want it, you can use the respective `curl` commands instead.
 
-## Install
+## Installation
 
 In order to use the Flock of Birds service, you need to clone this repo locally (especially if you want to do experiments around it):
 
@@ -37,8 +37,6 @@ Now we have the address of the Flock of Birds service and can use it (using `htt
 
 ## Usage
 
-## Example
-
 
 ## Testing
 
@@ -61,15 +59,30 @@ Now open up another terminal where you interact with the Flock of Birds service:
 
     $ http http://localhost:9999/api/stats
     HTTP/1.1 200 OK
-    Content-Length: 6
-    Content-Type: text/html; charset=UTF-8
-    Date: Sat, 02 Apr 2016 21:45:32 GMT
-    Etag: "fed579096cef6326cfb21e7040bf88d1da029035"
+    Content-Length: 20
+    Content-Type: application/json; charset=UTF-8
+    Date: Sat, 02 Apr 2016 23:10:41 GMT
+    Etag: "8af23ae30ba92d44d1a5335a5fc59f73e28588cc"
     Server: TornadoServer/4.3
-    
-    fob up
+
+    {
+        "status": "fob up"
+    }
+
+You can register a code snippet (function) like so:
 
     $ http POST http://localhost:9999/api/gen < ../py_example.py
+    HTTP/1.1 200 OK
+    Content-Length: 46
+    Content-Type: application/json; charset=UTF-8
+    Date: Sat, 02 Apr 2016 23:09:47 GMT
+    Server: TornadoServer/4.3
 
+    {
+        "id": "0e38b688-86e3-4966-9060-cf01eef59426"
+    }
 
+Then, you can query its status like so:
 
+    $ http http://localhost:9999/api/meta/0e38b688-86e3-4966-9060-cf01eef59426
+    
