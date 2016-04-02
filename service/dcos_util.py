@@ -37,4 +37,8 @@ def about_fun(marathon_api, fun_id):
     logging.debug("OPERATION: %s" %(op_url))
     res = requests.request('GET', op_url)
     logging.debug("RESPONSE:\n%s" %(res.json()))
-    return res
+    fun_meta = {
+        "host" : res.json()["app"]["tasks"][0]["host"],
+        "port" : res.json()["app"]["tasks"][0]["ports"][0]
+    }
+    return (res, fun_meta)

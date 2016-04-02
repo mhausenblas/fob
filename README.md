@@ -85,4 +85,14 @@ You can register a code snippet (function) like so:
 Then, you can query its status like so:
 
     $ http http://localhost:9999/api/meta/0e38b688-86e3-4966-9060-cf01eef59426
-    
+    HTTP/1.1 200 OK
+    Content-Length: 37
+    Content-Type: application/json; charset=UTF-8
+    Date: Sat, 02 Apr 2016 23:35:03 GMT
+    Etag: "b69f36130995a150445c04026c126e8cf9d069c7"
+    Server: TornadoServer/4.3
+
+    {
+        "host": "10.0.6.172",
+        "port": 25974
+    }

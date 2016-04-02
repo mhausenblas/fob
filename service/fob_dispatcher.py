@@ -75,9 +75,9 @@ class MetaFunHandler(tornado.web.RequestHandler):
         Provides information on a registered functions.
         """
         logging.info("Trying to look up function %s" %(fun_id))
-        res = dcos_util.about_fun(MARATHON_API, fun_id)
+        (res, fun_meta) = dcos_util.about_fun(MARATHON_API, fun_id)
         self.set_header("Content-Type", "application/json")
-        self.write(res.json())
+        self.write(fun_meta)
 
 def _make_app():
     """
