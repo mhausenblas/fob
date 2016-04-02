@@ -1,0 +1,21 @@
+{
+    "acceptedResourceRoles": [
+        "slave_public"
+    ],
+    "container": {
+        "docker": {
+            "image": "mhausenblas/fob",
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 9999,
+                    "hostPort": 0
+                }
+            ]
+        },
+        "type": "DOCKER"
+    },
+    "cpus": 0.2,
+    "id": "fob",
+    "mem": 300
+}
