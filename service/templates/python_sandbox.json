@@ -1,0 +1,22 @@
+{
+    "acceptedResourceRoles": [
+        "slave_public"
+    ],
+    "cmd": "env >env.txt && python3 -m http.server 8080",
+    "container": {
+        "docker": {
+            "image": "python:3",
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 0
+                }
+            ]
+        },
+        "type": "DOCKER"
+    },
+    "cpus": 0.1,
+    "id": "py_sandbox",
+    "mem": 100
+}
