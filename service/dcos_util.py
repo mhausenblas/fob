@@ -6,6 +6,7 @@ Utility functions for DCOS.
 @status: init
 """
 
+import logging
 import json 
 import requests
 
@@ -14,6 +15,7 @@ def launch_app(marathon_api, template_filename):
     Launches a DCOS app using the Marathon API.
     """
     op_url = "".join([marathon_api, "/v2/apps"])
+    logging.debug("OPERATION: %s" %(op_url))
     with open(template_filename) as f:
         payload = f.read()
         res = requests.request('POST', op_url, data=payload)

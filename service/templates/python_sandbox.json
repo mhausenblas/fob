@@ -17,6 +17,6 @@
         "type": "DOCKER"
     },
     "cpus": 0.1,
-    "id": "py_sandbox",
+    "id": "fob-aviary/python-1",
     "mem": 100
 }
