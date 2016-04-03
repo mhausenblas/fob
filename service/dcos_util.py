@@ -92,3 +92,13 @@ def call_fun(marathon_api, fun_id):
     res = requests.request('GET', op_url)
     logging.debug("RESPONSE:\n%s" %(res.json()))
     return res.json()["result"]
+
+def get_fun_code(fun_id):
+    """
+    Retrieves the code of a function.
+    """
+    code_snippet_filename = os.path.join(FUN_DIR, fun_id)
+    code_snippet = ""
+    with open(code_snippet_filename) as f:
+        code_snippet = f.read()
+    return code_snippet

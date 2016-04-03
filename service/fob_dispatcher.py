@@ -100,7 +100,7 @@ class CodeSnippetFunHandler(tornado.web.RequestHandler):
         """
         logging.info("Trying to return content of function %s" %(fun_id))
         self.set_header("Content-Type", "text/plain")
-        self.write("def callme():")
+        self.write(dcos_util.get_fun_code(fun_id))
 
 def _make_app():
     """
