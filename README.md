@@ -4,6 +4,10 @@ Flock of Birds is a proof-of-concept for a serverless offering based on [DCOS](h
 It is not meant to be used in production. Its purpose is to illustrate and study the properties of
 [serverless compute architectures](http://flock-of-birds.info/).
 
+![Demo](img/fob-poc-demo.gif)
+
+Watch [full demo]() ...
+
 ## Preparation
 
 For the following to work, I'm assuming you've got a DCOS cluster provisioned and the [DCOS CLI](https://docs.mesosphere.com/administration/cli/) installed. Further, you want to have [jq](https://stedolan.github.io/jq/) installed, otherwise you'd need to use `grep` for certain CLI interactions.
