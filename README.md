@@ -6,7 +6,7 @@ It is not meant to be used in production. Its purpose is to illustrate and study
 
 ![Demo](img/fob-poc-demo.gif)
 
-Watch [full demo]() ...
+… or watch the [full demo](https://vimeo.com/161388812).
 
 ## Preparation
 
