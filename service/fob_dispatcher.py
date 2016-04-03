@@ -43,11 +43,10 @@ class StatsHandler(tornado.web.RequestHandler):
         """
         Provides an overview of the registered functions.
         """
-        res = "fob up"
         self.set_header("Content-Type", "application/json")
-        # TODO: query /v2/groups/{dcos_util.FOB_PREFIX} and list all functions
-        self.write({
-            "status" : res
+        res = dcos_util.list_fun(MARATHON_API)
+        self.write( {
+            "functions" : res
         })
 
 class GenerateFunHandler(tornado.web.RequestHandler):

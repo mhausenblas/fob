@@ -87,7 +87,7 @@ def call_fun(marathon_api, fun_id):
     Calls a function using the Marathon API.
     """
     (res, fun_meta) = about_fun(marathon_api, fun_id)
-    op_url = "".join([fun_meta["host"], ":", fun_meta["port"]])
+    op_url = "".join([fun_meta["host"], ":", str(fun_meta["port"])])
     logging.debug("OPERATION: %s" %(op_url))
     res = requests.request('GET', op_url)
     logging.debug("RESPONSE:\n%s" %(res.json()))
@@ -102,3 +102,18 @@ def get_fun_code(fun_id):
     with open(code_snippet_filename) as f:
         code_snippet = f.read()
     return code_snippet
+
+def list_fun(marathon_api):
+    """
+    Retrieves a list of all registered functions under the `FOB_PREFIX` using the Marathon API.
+    """
+    op_url = "".join([marathon_api, "/v2/groups/", FOB_PREFIX])
+    logging.debug("OPERATION: %s" %(op_url))
+    res = requests.request('GET', op_url)
+    logging.debug("RESPONSE:\n%s" %(res.json()))
+    fun_list = []
+    apps = res.json()["apps"]
+    for app in apps:
+        logging.debug("Registered function %s" %(app["id"]))
+        fun_list.append(app["id"].split("/")[2])
+    return fun_list
