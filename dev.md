@@ -27,14 +27,17 @@ Now open up another terminal where you interact with the Flock of Birds service:
 
     $ http http://localhost:9999/api/stats
     HTTP/1.1 200 OK
-    Content-Length: 20
+    Content-Length: 95
     Content-Type: application/json; charset=UTF-8
-    Date: Sat, 02 Apr 2016 23:10:41 GMT
-    Etag: "8af23ae30ba92d44d1a5335a5fc59f73e28588cc"
+    Date: Sun, 03 Apr 2016 18:20:36 GMT
+    Etag: "6d8cffc288d757a408aa7874dbfde0a6c62f3542"
     Server: TornadoServer/4.3
-    
+
     {
-        "status": "fob up"
+        "functions": [
+            "2f0f7017-91eb-45a5-a07d-79c0b7c8a143",
+            "4d2696d1-7cdc-4138-89e7-613ac5e9cbd4"
+        ]
     }
 
 You can register a code snippet (function) like so:
@@ -47,12 +50,12 @@ You can register a code snippet (function) like so:
     Server: TornadoServer/4.3
     
     {
-        "id": "0e38b688-86e3-4966-9060-cf01eef59426"
+        "id": "2f0f7017-91eb-45a5-a07d-79c0b7c8a143"
     }
 
 Then, you can query the function status like so:
 
-    $ http http://localhost:9999/api/meta/0e38b688-86e3-4966-9060-cf01eef59426
+    $ http http://localhost:9999/api/meta/2f0f7017-91eb-45a5-a07d-79c0b7c8a143
     HTTP/1.1 200 OK
     Content-Length: 37
     Content-Type: application/json; charset=UTF-8
@@ -68,7 +71,7 @@ Then, you can query the function status like so:
 
 ## Driver
 
-To execute a code snippet, the Flock of Birds service uses drivers. These are sandboxes programming language-dependent sandboxes and are located in [driver/](driver/). Currently the following drivers are available:
+To execute a code snippet, the Flock of Birds service uses drivers. These are programming language-dependent sandboxes and are located in [driver/](driver/). Currently the following drivers are available:
 
 - [Python driver](driver/python/), allowing to execute 2.7 code
 - TBD: Node.js

@@ -89,9 +89,9 @@ def call_fun(marathon_api, fun_id, fun_param):
     (res, fun_meta) = about_fun(marathon_api, fun_id)
     
     if fun_param:
-        op_url = "".join([fun_meta["host"], ":", str(fun_meta["port"]), "?params=", fun_param])
+        op_url = "".join(["http://", fun_meta["host"], ":", str(fun_meta["port"]), "?params=", fun_param])
     else:
-        op_url = "".join([fun_meta["host"], ":", str(fun_meta["port"])])
+        op_url = "".join(["http://", fun_meta["host"], ":", str(fun_meta["port"])])
     logging.debug("OPERATION: %s" %(op_url))
     res = requests.request('GET', op_url)
     logging.debug("RESPONSE:\n%s" %(res.json()))
