@@ -4,6 +4,14 @@ Flock of Birds is a proof-of-concept for a serverless offering based on [DCOS](h
 It is not meant to be used in production. Its purpose is to illustrate and study the properties of
 [serverless compute architectures](http://flock-of-birds.info/).
 
+Todo:
+
+Use this for the driver:
+
+    curl https://gist.githubusercontent.com/mhausenblas/e5aaac01e963bd0761189d1360b79bc4/raw/3b31d6e05645f44d3a815bfbc451cb34542bab93/fob_example.py > fobfun.py && python fob_driver.py
+
+Use https://hub.docker.com/r/mkodockx/docker-pastebin/ to store code snippets rather than Gists.
+
 
 ## Prerequisites 
 

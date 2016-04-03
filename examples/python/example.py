@@ -1,5 +1,3 @@
-def call_me():
+def callme():
     print("Hello serverless world!")
-
-if __name__ == '__main__':
-    call_me()
+    return 42

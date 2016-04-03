@@ -2,10 +2,10 @@
     "acceptedResourceRoles": [
         "slave_public"
     ],
-    "cmd": "env >env.txt && python3 -m http.server 8080",
+    "cmd": "curl https://gist.githubusercontent.com/mhausenblas/e5aaac01e963bd0761189d1360b79bc4/raw/230f31cff345a79347b2c6c21c52d3987e557e5f/fob_example.py > fobfun.py && python fob_driver.py",
     "container": {
         "docker": {
-            "image": "python:3",
+            "image": "mhausenblas/fob:pydriver",
             "network": "BRIDGE",
             "portMappings": [
                 {
