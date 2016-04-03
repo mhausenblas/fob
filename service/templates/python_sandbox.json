@@ -2,7 +2,7 @@
     "acceptedResourceRoles": [
         "slave_public"
     ],
-    "cmd": "curl https://gist.githubusercontent.com/mhausenblas/e5aaac01e963bd0761189d1360b79bc4/raw/230f31cff345a79347b2c6c21c52d3987e557e5f/fob_example.py > fobfun.py && python fob_driver.py",
+    "cmd": "curl https://gist.githubusercontent.com/mhausenblas/e5aaac01e963bd0761189d1360b79bc4/raw/3b31d6e05645f44d3a815bfbc451cb34542bab93/fob_example.py > fobfun.py && python fob_driver.py",
     "container": {
         "docker": {
             "image": "mhausenblas/fob:pydriver",
