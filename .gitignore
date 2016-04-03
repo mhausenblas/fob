@@ -1,3 +1,6 @@
+# FOB specific
+service/funcache/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

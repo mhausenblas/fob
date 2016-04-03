@@ -28,7 +28,6 @@ from tornado.escape import json_encode
 
 
 DEBUG = True
-FOB_PORT = 9999
 PROD_MARATHON_API = "http://master.mesos/service/marathon"
 MARATHON_API = ""
 
@@ -46,8 +45,9 @@ class StatsHandler(tornado.web.RequestHandler):
         """
         res = "fob up"
         self.set_header("Content-Type", "application/json")
+        # TODO: query /v2/groups/{dcos_util.FOB_PREFIX} and list all functions
         self.write({
-                "status" : res
+            "status" : res
         })
 
 class GenerateFunHandler(tornado.web.RequestHandler):
@@ -60,7 +60,9 @@ class GenerateFunHandler(tornado.web.RequestHandler):
         logging.info("Trying to launch code snippet, interpreting it as [%s]" %(lang_arg))
         logging.debug("\n%s" %(code_snippet))
         try:
+            # the following is language/driver specific:
             (res, fun_id) = dcos_util.register_fun(MARATHON_API, "templates/python_sandbox.json", code_snippet)
+            
             self.set_header("Content-Type", "application/json")
             self.write({
                 "id" : fun_id
@@ -72,12 +74,33 @@ class GenerateFunHandler(tornado.web.RequestHandler):
 class MetaFunHandler(tornado.web.RequestHandler):
     def get(self, fun_id):
         """
-        Provides information on a registered functions.
+        Provides information about registered function `fun_id`.
         """
         logging.info("Trying to look up function %s" %(fun_id))
         (res, fun_meta) = dcos_util.about_fun(MARATHON_API, fun_id)
         self.set_header("Content-Type", "application/json")
         self.write(fun_meta)
+
+class CallFunHandler(tornado.web.RequestHandler):
+    def get(self, fun_id):
+        """
+        Calls registered function `fun_id`.
+        """
+        logging.info("Trying to call function %s" %(fun_id))
+        res = dcos_util.call_fun(MARATHON_API, fun_id)
+        self.set_header("Content-Type", "application/json")
+        self.write({
+            "result" : res
+        })
+
+class CodeSnippetFunHandler(tornado.web.RequestHandler):
+    def get(self, fun_id):
+        """
+        Retrieves the content of a code snippet identified by `fun_id`.
+        """
+        logging.info("Trying to return content of function %s" %(fun_id))
+        self.set_header("Content-Type", "text/plain")
+        self.write("def callme():")
 
 def _make_app():
     """
@@ -86,16 +109,18 @@ def _make_app():
     return tornado.web.Application([
         (r"/api/stats", StatsHandler),
         (r"/api/gen", GenerateFunHandler),
-        (r"/api/meta/(.*)", MetaFunHandler)
+        (r"/api/meta/(.*)", MetaFunHandler),
+        (r"/api/call/(.*)", CallFunHandler),
+        (r"/api/cs/(.*)", CodeSnippetFunHandler),
     ])
 
 if __name__ == "__main__":
     
     MARATHON_API = os.getenv('MARATHON_API', PROD_MARATHON_API)
     app = _make_app()
-    app.listen(FOB_PORT)
+    app.listen(dcos_util.FOB_PORT)
     logging.info("FOB dispatcher ready ===")
     logging.info("Using Marathon API %s" %(MARATHON_API))
-    logging.info("Listening on port %d" %(FOB_PORT))
+    logging.info("Listening on port %d" %(dcos_util.FOB_PORT))
     
     tornado.ioloop.IOLoop.current().start()
