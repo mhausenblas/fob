@@ -6,12 +6,14 @@ It is not meant to be used in production. Its purpose is to illustrate and study
 
 ## Preparation
 
-For the following to work, I'm assuming you've got a DCOS cluster provisioned and the [DCOS CLI](https://docs.mesosphere.com/administration/cli/) installed. Note: you want to have [jq](https://stedolan.github.io/jq/) installed, otherwise you'd need to use `grep` for certain CLI interactions.
+For the following to work, I'm assuming you've got a DCOS cluster provisioned and the [DCOS CLI](https://docs.mesosphere.com/administration/cli/) installed. Further, you want to have [jq](https://stedolan.github.io/jq/) installed, otherwise you'd need to use `grep` for certain CLI interactions.
 Also, I'm using [http](http://httpie.org) for HTTP API interactions, if you don't have this or want it, you can use the respective `curl` commands instead.
 
-You can clone this repo if you want to, but all that is really needed to launch the Flock of Birds service is `fob-service.json`, so the following is sufficient:
+You can clone this repo if you want to, but all that is really needed to launch the Flock of Birds service is `fob-service.json`, so the following is sufficient: 
 
     $ http --download https://raw.githubusercontent.com/mhausenblas/fob/master/fob-service.json
+
+Note that in order to try out the steps described in the usage section below you'll need the `example/` files, so in this case cloning the repo is necessary.
 
 To launch the Flock of Birds service, do the following:
 
@@ -22,7 +24,7 @@ To access the Flock of Birds service, you first have to figure out where it runs
     $ echo $DCOS_PUBLIC_AGENT
     52.33.144.9
 
-Next, you need to find out on which port the Flock of Birds service is running. This can be achieved using the following (requires `jq` command installed):
+Next, you need to find out on which port the Flock of Birds service is running. This can be achieved using the following:
 
     $ FOB_SERVICE_PORT="$(dcos marathon app show fob | jq .tasks[0].ports[0])"
     $ echo $FOB_SERVICE_PORT
@@ -40,28 +42,28 @@ Let's register two functions we want to use:
 Now let's see what functions are registered:
 
     $ http $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/stats
-    HTTP/1.1 200 OK
-    Content-Length: 95
-    Content-Type: application/json; charset=UTF-8
-    Date: Sun, 03 Apr 2016 18:20:36 GMT
-    Etag: "6d8cffc288d757a408aa7874dbfde0a6c62f3542"
-    Server: TornadoServer/4.3
-
     {
         "functions": [
-            "2f0f7017-91eb-45a5-a07d-79c0b7c8a143",
-            "4d2696d1-7cdc-4138-89e7-613ac5e9cbd4"
+            "5c2e7f5f-5e57-43b0-ba48-bacf40f666ba",
+            "fda0c536-2996-41a8-a6eb-693762e4d65b"
         ]
     }
 
-Calling a function is as easy: for example the function in `helloworld.py` doesn't take any parameters and always returns the same value:
+Calling a function is as easy: for example the function in [helloworld.py](examples/python/helloworld.py) doesn't take any parameters and always returns the same value:
 
-    $ http $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/call/
+    $ http $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/call/5c2e7f5f-5e57-43b0-ba48-bacf40f666ba
+    {
+        "result": 42
+    }
 
-We can also pass function arguments; let's add two numbers:
+We can also pass arguments to a function; let's [add](examples/python/add.py) two numbers using the function signature `fun(param1 : number, param2 : number) -> number`:
 
-    $ http $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/call/?params=param1:1,param2:1
+    $ http $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/call/fda0c536-2996-41a8-a6eb-693762e4d65b?param1:1,param2:1
+    {
+        "result": 2
+    }
 
+Wow, we just did `1 + 1 = 2`, and that without provisioning any machines, just by uploading a code snippet ;)
 
 ## Background
 
