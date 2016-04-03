@@ -82,12 +82,16 @@ def about_fun(marathon_api, fun_id):
     }
     return (res, fun_meta)
 
-def call_fun(marathon_api, fun_id):
+def call_fun(marathon_api, fun_id, fun_param):
     """
     Calls a function using the Marathon API.
     """
     (res, fun_meta) = about_fun(marathon_api, fun_id)
-    op_url = "".join([fun_meta["host"], ":", str(fun_meta["port"])])
+    
+    if fun_param:
+        op_url = "".join([fun_meta["host"], ":", str(fun_meta["port"]), "?params=", fun_param])
+    else:
+        op_url = "".join([fun_meta["host"], ":", str(fun_meta["port"])])
     logging.debug("OPERATION: %s" %(op_url))
     res = requests.request('GET', op_url)
     logging.debug("RESPONSE:\n%s" %(res.json()))

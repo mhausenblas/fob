@@ -85,8 +85,9 @@ class CallFunHandler(tornado.web.RequestHandler):
         """
         Calls registered function `fun_id`.
         """
-        logging.info("Trying to call function %s" %(fun_id))
-        res = dcos_util.call_fun(MARATHON_API, fun_id)
+        fun_param = self.request.query
+        logging.info("Trying to call function %s with %s" %(fun_id, fun_param))
+        res = dcos_util.call_fun(MARATHON_API, fun_id, fun_param)
         self.set_header("Content-Type", "application/json")
         self.write({
             "result" : res

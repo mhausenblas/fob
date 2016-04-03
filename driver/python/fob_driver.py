@@ -42,11 +42,14 @@ class DriverHandler(tornado.web.RequestHandler):
         """
         try:
             params = self.get_query_argument(name="params", default="", strip=True)
-            logging.debug("Raw query parameters %s" %(params))
-            params = params.split(",")
-            params = {k:v for k,v in (p.split(':') for p in params) }
-            logging.info("Got parameters %s" %(params))
-            res = fobfun.callme(**params)
+            if params:
+                logging.debug("Raw query parameters %s" %(params))
+                params = params.split(",")
+                params = {k:v for k,v in (p.split(':') for p in params) }
+                logging.info("Got parameters %s" %(params))
+                res = fobfun.callme(**params)
+            else:
+                res = fobfun.callme()
             self.write({
                 "result" : res
             })
