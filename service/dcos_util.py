@@ -116,9 +116,11 @@ def list_fun(marathon_api):
     res = requests.request('GET', op_url)
     logging.debug("RESPONSE:\n%s" %(res.json()))
     fun_list = []
-    if res.json()["apps"]:
+    try:
         apps = res.json()["apps"]
         for app in apps:
             logging.debug("Registered function %s" %(app["id"]))
             fun_list.append(app["id"].split("/")[2])
+    except:
+        pass
     return fun_list
