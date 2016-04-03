@@ -92,7 +92,17 @@ to work but the end-user should not bother about them (they provide for service 
 
 You can also experiment with the Flock of Birds service yourself, for example adding new drivers—see the notes in the [development](dev.md) section.
 
+### System Architecture
 
+This is how things play together in the Flock of Birds service:
 
+![fob architecture](img/fob-arch.png)
 
+1. A client posts a code snippet to `/api/gen`
+1. The dispatcher, using the Marathon API, launches the matching driver along with the code snippet
+1. The dispatcher returns the ID under which the function is registered, let's call it `$fun_id`, to the client
+1. The client calls the function registered above using `/api/call/$fun_id`
+1. The dispatcher routes the function call to the respective driver
+1. The result of the function call is returned to the client
 
+Note that both the dispatcher and the drivers are completely stateless. State is managed through Marathon, using the function IDs and a group where all functions live, logically.
