@@ -5,6 +5,7 @@
     "container": {
         "docker": {
             "image": "mhausenblas/fob",
+            "forcePullImage": true,
             "network": "BRIDGE",
             "portMappings": [
                 {
