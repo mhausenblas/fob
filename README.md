@@ -33,7 +33,7 @@ Next, you need to find out on which port the Flock of Birds service is running. 
 
 Now we have the address of the Flock of Birds service and can use it (using `http` command):
 
-    $ http POST $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/gen < py_example.py
+    $ http POST $DCOS_PUBLIC_AGENT:$FOB_SERVICE_PORT/api/gen < examples/python/example.py
 
 ## Usage
 
@@ -64,25 +64,25 @@ Now open up another terminal where you interact with the Flock of Birds service:
     Date: Sat, 02 Apr 2016 23:10:41 GMT
     Etag: "8af23ae30ba92d44d1a5335a5fc59f73e28588cc"
     Server: TornadoServer/4.3
-
+    
     {
         "status": "fob up"
     }
 
 You can register a code snippet (function) like so:
 
-    $ http POST http://localhost:9999/api/gen < ../py_example.py
+    $ http POST http://localhost:9999/api/gen < ../examples/python/example.py
     HTTP/1.1 200 OK
     Content-Length: 46
     Content-Type: application/json; charset=UTF-8
     Date: Sat, 02 Apr 2016 23:09:47 GMT
     Server: TornadoServer/4.3
-
+    
     {
         "id": "0e38b688-86e3-4966-9060-cf01eef59426"
     }
 
-Then, you can query its status like so:
+Then, you can query the function status like so:
 
     $ http http://localhost:9999/api/meta/0e38b688-86e3-4966-9060-cf01eef59426
     HTTP/1.1 200 OK
@@ -91,7 +91,7 @@ Then, you can query its status like so:
     Date: Sat, 02 Apr 2016 23:35:03 GMT
     Etag: "b69f36130995a150445c04026c126e8cf9d069c7"
     Server: TornadoServer/4.3
-
+    
     {
         "host": "10.0.6.172",
         "port": 25974
